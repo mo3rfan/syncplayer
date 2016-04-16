@@ -1,0 +1,33 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion '24.0.0 rc1'
+
+    defaultConfig {
+        applicationId "io.github.powerinside.syncplay"
+        minSdkVersion 9
+        targetSdkVersion 23
+        versionCode 2
+        versionName "1.1 beta"
+        manifestPlaceholders = [HOCKEYAPP_APP_ID: "4675c09f8f91452a80da0602b2541ac1"]
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            zipAlignEnabled true
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:23.3.0'
+    compile 'com.android.support:design:23.3.0'
+    compile 'com.android.support:support-v4:23.3.0'
+    compile 'com.google.android.gms:play-services-appindexing:8.4.0'
+    compile 'com.google.android.gms:play-services-ads:8.4.0'
+    compile 'net.hockeyapp.android:HockeySDK:3.7.1'
+}
