@@ -1,0 +1,34 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="top"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:text="User List"
+        android:textSize="15sp"
+        android:visibility="visible" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@android:color/darker_gray" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/list_item_spacing_half"
+        android:layout_marginTop="10dp"
+        tools:context="io.github.powerinside.syncplay.UserListDialogFragment"
+        tools:listitem="@layout/fragment_user_list_dialog_item">
+        </android.support.v7.widget.RecyclerView>
+</LinearLayout>

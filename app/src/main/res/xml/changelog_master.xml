@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<changelog>
+    <release version="1.6.0" versioncode="14">
+        <change>Bump exoplayer to v2.4.0</change>
+        <change>App is now fully open source and free from ads!</change>
+        <change>Removed lots of dependencies</change>
+    </release>
+    <release version="1.5.1" versioncode="12">
+        <change>Bug fix release</change>
+        <change>Make apk more smaller</change>
+    </release>
+    <release version="1.5" versioncode="11">
+        <change>Fix more crashes</change>
+        <change>Fix fullscreen button</change>
+    </release>
+    <release version="1.5-beta-1" versioncode="10">
+        <change>Fixed crashes while specifying URL without port.</change>
+        <change>Fixed seek command which was not being sent to the server before.</change>
+        <change>Known issue: Video may not load for URLs initially. Load a local video first to fix this.</change>
+        <change>Removed 'SRT' text.</change>
+        <change>Updated exoplayer.</change>
+        <change>Updated HockeyApp SDK.</change>
+    </release>
+    <release version="1.5-alpha-2" versioncode="9">
+        <change>Fix potential crashes (few may remain but thank you for reporting).</change>
+        <change>Instrumented the code to make debugging easier.</change>
+    </release>
+    <release version="1.5-alpha-1" versioncode="8">
+        <change>NEW: Changed player to exoplayer. More stable!</change>
+        <change>Some core refactoring and bug fixes.</change>
+        <change>Web URL support added (YouTube coming soon!)</change>
+        <change>User list (not yet fully ready).</change>
+    </release>
+    <release version="1.4" versioncode="6">
+        <change>Fixed crashes in Android 6.0+</change>
+        <change>Changes in color scheme.</change>
+        <change>Minimize/background playback should work without crashing (thanks for feedback).
+        </change>
+        <change>Better fullscreen mode (thanks for feedback).</change>
+    </release>
+    <release version="1.3" versioncode="5">
+        <change>Added this changelog dialog box.</change>
+        <change>Added Email support for invites.</change>
+        <change>Added isReady toggle button in overlay.</change>
+        <change>Back button is more responsive from video player.</change>
+        <change>Clean up a few errenous error messages.</change>
+        <change>Autoload subtitles (srt with same name) on 4.1 and above.</change>
+    </release>
+    <release version="1.2" versioncode="4">
+        <change>Supports automatic "isReady" signalling.</change>
+        <change>VideoPlayer screen made always-on.</change>
+        <change>Added feedback button and share button.</change>
+        <change>Fixed minimize issues.</change>
+        <change>Fixed duplicate dialog window being opened after clicking add.</change>
+        <change>Fixed crashes in the file picker.</change>
+        <change>Reminder dialog box to review/rate this app (Need your honest reviews).</change>
+    </release>
+    <release version="1.0" versioncode="1">
+        <change>Initial release.</change>
+    </release>
+</changelog>

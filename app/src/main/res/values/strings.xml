@@ -1,0 +1,80 @@
+<resources>
+    <string name="app_name">SyncPlayer</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_settings">Settings</string>
+    <string name="pref_header_general">General</string>
+
+    <string name="pref_loop_title">Enable looping</string>
+    <string name="pref_loop">Start playing the video again from starting position after completion.
+    </string>
+
+    <string name="pref_title_display_name">Display name</string>
+    <string name="pref_default_display_name">John Smith</string>
+
+    <string name="pref_title_add_friends_to_messages">Add friends to messages</string>
+    <string-array name="pref_example_list_titles">
+        <item>Always</item>
+        <item>When possible</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_example_list_values">
+        <item>1</item>
+        <item>0</item>
+        <item>-1</item>
+    </string-array>
+
+    <string name="pref_header_data_sync">Data &amp; sync</string>
+
+    <string name="pref_title_sync_frequency">Sync frequency</string>
+    <string-array name="pref_sync_frequency_titles">
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+        <item>3 hours</item>
+        <item>6 hours</item>
+        <item>Never</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_values">
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+        <item>-1</item>
+    </string-array>
+
+    <string name="pref_title_system_sync_settings">System sync settings</string>
+    <string name="pref_header_notifications">Notifications</string>
+
+    <string name="pref_title_new_message_notifications">New message notifications</string>
+
+    <string name="pref_title_ringtone">Ringtone</string>
+    <string name="pref_ringtone_silent">Silent</string>
+
+    <string name="pref_title_vibrate">Vibrate</string>
+    <string name="server_address">Server Address</string>
+    <string name="server_password">Server Password (if any)</string>
+    <string name="username">Nickname</string>
+    <string name="default_room">Room</string>
+    <string name="default_server">syncplay.pl:8995</string>
+    <string name="add_server_dialog">Add a new syncplay server</string>
+    <string name="name">Name</string>
+    <string name="title_activity_video_player">Video Player</string>
+    <string name="fields_error">All fields except password are mandatory.</string>
+    <string name="insertOrThrow">Error: Label already exists in list.</string>
+    <string name="modify_entry_title">Modify entry</string>
+    <string name="save_button">Save</string>
+    <string name="delete_button">Delete</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="progress_connecting">Connecting..</string>
+    <string name="progress_wait">Please wait</string>
+    <string name="close">Close</string>
+    <string name="bad_meta">Bad metadata detected. Did you select a proper media file?</string>
+    <string name="nextup_readystate">ReadyState</string>
+    <string name="nextup_state">State</string>
+    <string name="nextup_set">Set</string>
+    <string name="description">media controls</string>
+    <string name="about">About</string>
+    <string name="title_activity_about">About</string>
+    <string name="userlist">user-list</string>
+</resources>

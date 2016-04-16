@@ -1,0 +1,3 @@
+[submodule "syncplay"]
+	path = syncplay
+	url = git@github.com:PowerInside/syncplay-java.git

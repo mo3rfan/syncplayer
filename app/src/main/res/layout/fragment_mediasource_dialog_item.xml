@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:layout_gravity="center_horizontal"
+    android:gravity="center_horizontal"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/chooseButton"
+    android:layout_width="128dp"
+    android:layout_height="128dp"
+    android:background="?attr/selectableItemBackground"
+    android:paddingBottom="@dimen/list_item_spacing_half"
+    android:paddingLeft="@dimen/list_item_spacing"
+    android:paddingRight="@dimen/list_item_spacing"
+    android:paddingTop="@dimen/list_item_spacing_half"
+    />
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/chooseButtonText"
+    android:layout_width="128dp"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:paddingBottom="@dimen/list_item_spacing_half"
+    android:paddingLeft="@dimen/list_item_spacing"
+    android:paddingRight="@dimen/list_item_spacing"
+    android:paddingTop="@dimen/list_item_spacing_half"
+    android:layout_marginTop="128dp"
+    android:layout_marginLeft="-128dp"
+    android:textAlignment="center"
+    />
+</LinearLayout>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/video_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    android:gravity="center_horizontal|center_vertical"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/videoSurfaceContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <SurfaceView
+            android:id="@+id/videoSurface"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/nothingOpenedText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:gravity="center"
+            android:layout_margin="3dp"
+            android:textSize="20dp"
+            android:visibility="invisible"
+            android:text="No media file opened! Tap on the screen to bring up the controls and select a video by tapping on the '+' button."
+            android:textAlignment="center" />
+
+        <io.github.powerinside.syncplay.ExoControllerView
+            android:layout_width="match_parent"
+            android:id="@+id/exo_controller_view1"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:controller_layout_id="@layout/media_controller"
+            />
+
+        <TextView
+            android:id="@+id/OSD"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|top"
+            android:paddingLeft="30dp"
+            android:shadowColor="#000000"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="0.01"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:id="@+id/subtitle"
+            android:layout_gravity="bottom|center_horizontal"
+            android:textAlignment="center"
+            android:shadowColor="#000000"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="0.01"
+            android:singleLine="true"
+            android:text="SRT"
+            android:layout_marginBottom="50dp" />
+
+    </FrameLayout>
+</LinearLayout>
