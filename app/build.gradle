@@ -8,13 +8,13 @@ android {
         applicationId "io.github.powerinside.syncplay"
         minSdkVersion 9
         targetSdkVersion 23
-        versionCode 2
-        versionName "1.1 beta"
+        versionCode 5
+        versionName "1.3"
         manifestPlaceholders = [HOCKEYAPP_APP_ID: "4675c09f8f91452a80da0602b2541ac1"]
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             zipAlignEnabled true
         }
@@ -27,7 +27,13 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'com.android.support:design:23.3.0'
     compile 'com.android.support:support-v4:23.3.0'
-    compile 'com.google.android.gms:play-services-appindexing:8.4.0'
+    compile 'com.google.android.gms:play-services:8.4.0'
     compile 'com.google.android.gms:play-services-ads:8.4.0'
     compile 'net.hockeyapp.android:HockeySDK:3.7.1'
+    compile 'com.github.hotchemi:android-rate:1.0.1'
+    compile files('libs/appszoomsdk.jar')
+    compile 'com.google.android.gms:play-services-analytics:8.4.0'
+    compile 'de.cketti.library.changelog:ckchangelog:1.2.2'
 }
+
+apply plugin: 'com.google.gms.google-services'

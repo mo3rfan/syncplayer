@@ -4,17 +4,22 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Path;
 import android.media.MediaMetadataRetriever;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.OpenableColumns;
 import android.util.Log;
+import android.widget.ToggleButton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -33,7 +38,7 @@ public class syncplay {
     protected boolean connected = true;
 
     Boolean doSeek = false;
-    CustomVideoView videoview;
+    CustomMediaPlayer videoview; // TODO: Change arg name
     Integer client = 1;
     JSONObject ignoreOnTheFly;
     Handler OSDHandler;
@@ -46,9 +51,12 @@ public class syncplay {
     private Activity activity; // umm
     private Integer ourLatency = 0; // ...
     private boolean ignoreOnFly = false;
+    boolean isReady = false;
+    boolean isReady_triggered = false;
+    boolean is_manually_initiated = false;
 
     public syncplay(String address, String username, String password, String room,
-                    Activity a, Context c, Uri uri, CustomVideoView vv, Handler OSDHandler) throws UnknownHostException {
+                    Activity a, Context c, Uri uri, CustomMediaPlayer vv, Handler OSDHandler) throws UnknownHostException {
         if (!password.isEmpty()) {
             this.password = utils.md5(password);
         } else {
@@ -63,12 +71,13 @@ public class syncplay {
         this.room = room;
         mfile = new mediafile(c, uri, a);
 
-        videoview.setVideoViewListener(new CustomVideoView.VideoViewListener() {
+        videoview.setMediaPlayerListener(new CustomMediaPlayer.MediaPlayerListener() {
             @Override
             public void onPlay() {
                 doSeek = false; //ignoreOnFly = true;
                 setPaused(false);
                 setPosition((double) videoview.getCurrentPosition());
+                set_ready(true, false);
             }
 
             @Override
@@ -76,6 +85,7 @@ public class syncplay {
                 doSeek = false; //ignoreOnFly = true;
                 setPaused(true);
                 setPosition((double) videoview.getCurrentPosition());
+                set_ready(false, false);
             }
 
             @Override
@@ -187,7 +197,11 @@ public class syncplay {
                 }
 
                 // Send
-                return "State"; // socket should prepare to send state frame.
+                if (isReady_triggered) {
+                    return activity.getString(R.string.nextup_readystate);
+                } else {
+                    return activity.getString(R.string.nextup_state); // socket should prepare to send state frame.
+                }
             } catch (JSONException e) {
                 //e.printStackTrace();
             }
@@ -237,7 +251,7 @@ public class syncplay {
                 if (!osdmessage.equals("User '" + username + "'")) {
                     showOSD(osdmessage);
                 }
-                return "Set";
+                return activity.getString(R.string.nextup_set);
             } catch (JSONException e) {
 
             }
@@ -315,6 +329,29 @@ public class syncplay {
         return jobj.toString();
     }
 
+    public String prepare_frame(String type, Boolean ready, Boolean is_manual) throws JSONException {
+        JSONObject jobj = null;
+        if(type.equals(activity.getString(R.string.nextup_readystate))) {
+            JSONObject details = new JSONObject().put("username", username)
+                    .put("isReady", ready)
+                    .put("manuallyInitiated", is_manual);
+            JSONObject contents = new JSONObject().put("ready", details);
+            jobj = new JSONObject().put("Set", contents);
+            isReady_triggered = false;
+        }
+        return jobj.toString();
+    }
+
+    public void set_ready(Boolean isready, Boolean is_manual) {
+        isReady = isready;
+        is_manually_initiated = is_manual;
+        if (!activity.isFinishing()) {
+            ToggleButton is_ready = (ToggleButton) activity.findViewById(R.id.ready);
+            is_ready.setChecked(isReady);
+        }
+        isReady_triggered = true;
+    }
+
     public void showOSD(String m) {
         Message msg = new Message();
         msg.obj = m;
@@ -348,6 +385,20 @@ public class syncplay {
                 this.filename = returnCursor.getString(nameIndex);
                 this.filesize = returnCursor.getLong(sizeIndex);
             }
+            String fullpath = utils.getPath(activity, uri);
+            String subtitle_path = fullpath.substring(0, fullpath.lastIndexOf(".")) + ".srt";
+            File tocheck = new File(subtitle_path);
+            if (tocheck.exists()) { // not needed if IOException can be caught?
+                try {
+                    videoview.addTimedTextSource(subtitle_path, CustomMediaPlayer.MEDIA_MIMETYPE_TEXT_SUBRIP);
+                    Log.d("Syncplayer", "loaded subtitle!");
+                    CustomMediaPlayer.TrackInfo[] tinfo = videoview.getTrackInfo();
+                    videoview.selectTrack(tinfo.length - 1);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            Log.d("Syncplayer", subtitle_path);
         }
 
         public String getFilename() {

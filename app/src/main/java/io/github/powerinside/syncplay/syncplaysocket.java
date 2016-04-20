@@ -8,6 +8,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
+
 import org.json.JSONException;
 
 import java.io.BufferedReader;
@@ -33,7 +35,7 @@ public class syncplaysocket extends syncplay {
 
     public syncplaysocket(String address, String username, String password,
                           String room, Handler handler, ProgressDialog p,
-                          Activity a, Context c, Uri uri, CustomVideoView vv,
+                          Activity a, Context c, Uri uri, CustomMediaPlayer vv,
                           Handler OSDHandler) throws JSONException, IOException {
         super(address, username, password, room, a, c, uri, vv, OSDHandler);
         this.handler = handler;
@@ -55,6 +57,7 @@ public class syncplaysocket extends syncplay {
             if (socket.isConnected()) {
                 Log.d("Syncplay", "Connected!");
                 loader.dismiss();
+                GoogleAnalytics.getInstance(activity).dispatchLocalHits(); // or put this in another place.
             } else {
 
             }
@@ -76,11 +79,11 @@ public class syncplaysocket extends syncplay {
                     break;
                 try {
                     String nextup = parse(response);
-                    if (nextup.equals("State")) {
-                        send_frame(output, prepare_frame("State"));
+                    if (nextup.equals(activity.getString(R.string.nextup_state))) {
+                        send_frame(output, prepare_frame(activity.getString(R.string.nextup_state)));
                     }
-                    if (nextup.equals("State") && !isfileSet) {
-                        send_frame(output, prepare_frame("Set"));
+                    if (nextup.equals(activity.getString(R.string.nextup_state)) && !isfileSet) {
+                        send_frame(output, prepare_frame(activity.getString(R.string.nextup_set)));
                         isfileSet = true;
                     }
                     if (nextup.equals("KILL")) {
@@ -89,6 +92,10 @@ public class syncplaysocket extends syncplay {
                         msg.obj = "Disconnected from server!";
                         handler.sendMessage(msg);
                         this.close();
+                    }
+                    if (nextup.equals("ReadyState")) {
+                        send_frame(output, prepare_frame(activity.getString(R.string.nextup_readystate),
+                                isReady, is_manually_initiated));
                     }
                 } catch (syncplay.syncplayerror syncplayerror) {
                     Message msg = new Message();

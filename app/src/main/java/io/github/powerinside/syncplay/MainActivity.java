@@ -28,12 +28,17 @@ import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.google.android.gms.appinvite.AppInviteInvitation;
 
 import net.hockeyapp.android.CrashManager;
 import net.hockeyapp.android.FeedbackManager;
 import net.hockeyapp.android.Tracking;
 import net.hockeyapp.android.UpdateManager;
 
+import de.cketti.library.changelog.ChangeLog;
+import hotchemi.android.rate.AppRate;
 import io.github.powerinside.syncplay.database.ServerListContract;
 import io.github.powerinside.syncplay.database.ServerListHelper;
 
@@ -41,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "SyncPlay";
     private static final boolean DEVELOPER_MODE = false;
+    private static final int REQUEST_INVITE = 1;
     private int REQUEST_TAKE_GALLERY_VIDEO = 1;
     private Intent tovideoplayer;
 
@@ -49,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         checkForCrashes();
         Tracking.startUsage(this);
+        mTracker.setScreenName(this.getLocalClassName());
+        mTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     /**
@@ -56,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
 
+    Tracker mTracker;
+    ChangeLog cl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (DEVELOPER_MODE) {
@@ -74,6 +84,25 @@ public class MainActivity extends AppCompatActivity {
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        cl = new ChangeLog(this);
+        if (cl.isFirstRun()) {
+            cl.getFullLogDialog().show();
+        }
+
+        AnalyticsApplication application = (AnalyticsApplication) getApplication();
+        mTracker = application.getDefaultTracker();
+
+        AppRate.with(this)
+                .setInstallDays(0) // default 10, 0 means install day.
+                .setLaunchTimes(3) // default 10
+                .setRemindInterval(2) // default 1
+                .setShowLaterButton(true) // default true
+                .setDebug(false) // default false
+                .monitor();
+        // Show a dialog if meets conditions
+        AppRate.showRateDialogIfMeetsConditions(this);
+
         checkForUpdates();
         FeedbackManager.register(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -84,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
                 .addTestDevice(getString(R.string.testdevice1))
                 .addTestDevice(getString(R.string.adtestdevice2)).build();
         mAdView.loadAd(adRequest);
+
         // TODO: Better ad content targeting etc
 
         final ServerListHelper serverListHelper = new ServerListHelper(this);
@@ -96,7 +126,6 @@ public class MainActivity extends AppCompatActivity {
                 ServerListContract.ServerEntry.COLUMN_NAME_NAME
         };
         final Cursor cursor;
-
 
         cursor = db_read.query(ServerListContract.ServerEntry.TABLE_NAME,
                 projection,
@@ -124,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
                         null, ServerListContract.ServerEntry.COLUMN_NAME_NAME + " = ?", label, null, null, null);
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 final String[] oldname = {null};
-                final AlertDialog alertDialog = builder.setTitle(getString(R.string.modify_entry_title)).setPositiveButton(getString(R.string.save_button), null).setNegativeButton(getString(R.string.delete_button), new DialogInterface.OnClickListener() {
+                final AlertDialog alertDialog = builder.setTitle(R.string.modify_entry_title).setPositiveButton(R.string.save_button, null).setNegativeButton(R.string.delete_button, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // delete
@@ -226,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
                     String username = itemdetails.getString(5);
 
                     Intent intent = new Intent()
-                            .setType("video/*,audio/*")
+                            .setType("video/*, audio/*")
                             .setAction(Intent.ACTION_GET_CONTENT)
                             .addCategory(Intent.CATEGORY_OPENABLE);
                     //.addCategory(Intent.EXTRA_LOCAL_ONLY);
@@ -252,7 +281,7 @@ public class MainActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this).setView(R.layout.fabdialog_add);
 
                 final AlertDialog mdialog = builder.setTitle(R.string.add_server_dialog)
-                        .setPositiveButton(getString(R.string.save_button), null).setNegativeButton(getString(R.string.cancel_button), null).create();
+                        .setPositiveButton(R.string.save_button, null).setNegativeButton(R.string.cancel_button, null).create();
 
                 mdialog.setOnShowListener(new DialogInterface.OnShowListener() {
                     @Override
@@ -303,7 +332,8 @@ public class MainActivity extends AppCompatActivity {
                         });
                     }
                 });
-                mdialog.show();
+                if (!mdialog.isShowing())
+                    mdialog.show();
 
                 Snackbar.make(view, "", Snackbar.LENGTH_LONG)
                         .setAction(R.string.add_server_dialog, new View.OnClickListener() {
@@ -346,7 +376,38 @@ public class MainActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.hkeyfeedback) {
             FeedbackManager.showFeedbackActivity(MainActivity.this);
+            mTracker.send(new HitBuilders.EventBuilder()
+                    .setCategory("Action")
+                    .setAction("Feedback")
+                    .build());
             return true;
+        }
+        if (id == R.id.share) {
+            mTracker.send(new HitBuilders.EventBuilder()
+                    .setCategory("Action")
+                    .setAction("Share")
+                    .build());
+            Intent intent = new AppInviteInvitation.IntentBuilder(getString(R.string.share_app_title))
+                    .setMessage(getString(R.string.share_app_message))
+                    .setEmailHtmlContent("<html><body>" +
+                            "<a href=\"%%APPINVITE_LINK_PLACEHOLDER%%\">" +
+                            getString(R.string.share_app_cta) + "</a>"
+                            + "</body></html>")
+                    .setEmailSubject(getString(R.string.invite_email_subject))
+                    //.setCallToActionText(getString(R.string.share_app_cta))
+                    .setGoogleAnalyticsTrackingId(getString(R.string.google_analytics_id))
+                    .build();
+            startActivityForResult(intent, REQUEST_INVITE);
+            return true;
+        }
+
+        if (id == R.id.changelog) {
+            if (!cl.getFullLogDialog().isShowing())
+                cl.getFullLogDialog().show();
+        }
+
+        if (id == R.id.about) {
+            startActivity(new Intent(this, AboutActivity.class));
         }
 
         return super.onOptionsItemSelected(item);
@@ -382,9 +443,14 @@ public class MainActivity extends AppCompatActivity {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
                 Uri selectedFile = data.getData();
-                startActivity(new Intent(this, videoPlayer.class)
-                        .setData(selectedFile)
-                        .putExtras(tovideoplayer));
+                if (selectedFile != null) {
+                    startActivity(new Intent(this, videoPlayer.class)
+                            .setData(selectedFile)
+                            .putExtras(tovideoplayer));
+                } else if (resultCode != REQUEST_INVITE) {
+                    Toast.makeText(this, "Error loading the file.", Toast.LENGTH_SHORT)
+                            .show();
+                }
             }
         }
     }

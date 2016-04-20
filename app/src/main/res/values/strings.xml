@@ -85,4 +85,19 @@
     <string name="testdevice1">88A96BD8F8BB3FC8588AA858B0B245BC</string>
     <string name="send_feedback">Send feedback</string>
     <string name="adtestdevice2">1C478DFFC052280CBD65AEAA5493E5B2</string>
+    <string name="az_appkey">bb256bd33532c62eaad5dd3a3af1d425</string>
+    <string name="close">Close</string>
+    <string name="bad_meta">Bad metadata detected! Did you select a proper media file?</string>
+    <string name="nextup_readystate">ReadyState</string>
+    <string name="nextup_state">State</string>
+    <string name="nextup_set">Set</string>
+    <string name="share_app">Share this app</string>
+    <string name="share_app_title">Invite your friends!</string>
+    <string name="share_app_message">Let\'s watch a video we both have on our phones using the SyncPlayer app.</string>
+    <string name="share_app_cta">Get it now for free</string>
+    <string name="description">media controls</string>
+    <string name="invite_email_subject">Let us watch together</string>
+    <string name="google_analytics_id">UA-76640821-1</string>
+    <string name="about">About</string>
+    <string name="title_activity_about">About</string>
 </resources>
