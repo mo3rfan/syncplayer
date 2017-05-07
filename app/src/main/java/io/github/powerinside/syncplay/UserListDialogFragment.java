@@ -98,13 +98,27 @@ public class UserListDialogFragment extends BottomSheetDialogFragment {
         final TextView fileSize;
         final TextView fileName;
 
+        final TextView userNameLabel;
+        final TextView durationLabel;
+        final TextView fileSizeLabel;
+        final TextView fileNameLabel;
+
+        final ViewGroup userContainer;
+
         ViewHolder(LayoutInflater inflater, ViewGroup parent) {
             // TODO: Customize the item layout
             super(inflater.inflate(R.layout.fragment_user_list_dialog_item, parent, false));
             userName = (TextView) itemView.findViewById(R.id.userName);
+            userNameLabel = (TextView) itemView.findViewById(R.id.userLabel);
             duration = (TextView) itemView.findViewById(R.id.duration);
+            durationLabel = (TextView) itemView.findViewById(R.id.durationLabel);
             fileSize = (TextView) itemView.findViewById(R.id.fileSize);
+            fileSizeLabel = (TextView) itemView.findViewById(R.id.fileSizeLabel);
             fileName = (TextView) itemView.findViewById(R.id.fileName);
+            fileNameLabel = (TextView) itemView.findViewById(R.id.fileNameLabel);
+
+            userContainer = (ViewGroup) itemView.findViewById(R.id.userContainer);
+
             userName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -133,10 +147,16 @@ public class UserListDialogFragment extends BottomSheetDialogFragment {
         @Override
         public void onBindViewHolder(ViewHolder holder, int position) {
             if (getArguments().getBundle("0") == null) {
-                holder.userName.setText("No one else here");
+
                 holder.duration.setText("");
+                holder.durationLabel.setText("");
                 holder.fileSize.setText("");
+                holder.fileSizeLabel.setText("");
                 holder.fileName.setText("");
+                holder.fileNameLabel.setText("");
+
+                holder.userName.setText("No one else here");
+                holder.userNameLabel.setText("");
             } else {
                 Bundle user = getArguments().getBundle(String.valueOf(position));
                 holder.userName.setText(user.getString("username"));
