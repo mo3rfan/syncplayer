@@ -71,6 +71,7 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
     private Intent pickerProvider;
     private Handler userListHandler;
     private boolean isFullS;
+    private ToggleButton is_ready;
 
     @Override
     public void onMediaSourceClicked(int position) {
@@ -291,6 +292,7 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_vid_player);
         nothingLoaded = (TextView) findViewById(R.id.nothingOpenedText);
+        is_ready = (ToggleButton) findViewById(R.id.ready);
         nothingLoaded.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -302,7 +304,6 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
             }
         });
 
-        final ToggleButton is_ready = (ToggleButton) findViewById(R.id.ready);
         if (is_ready != null) {
             is_ready.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -458,6 +459,7 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
                     @Override
                     public void onRenderedFirstFrame() {
                         nothingLoaded.setVisibility(View.GONE);
+                        is_ready.setEnabled(true);
                     }
                 });
                 mService.mMediaPlayer.addListener(new ExoPlayer.EventListener() {
