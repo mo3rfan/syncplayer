@@ -29,6 +29,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -262,25 +263,6 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (!controller.isShown()) {
-            controller.show();
-        }
-
-        final ToggleButton is_ready = (ToggleButton) findViewById(R.id.ready);
-        if (is_ready != null) {
-            is_ready.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                }
-            });
-        } else {
-            Log.d("SyncPlayer", "Toggle error");
-        }
-        return false;
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent i = getIntent();
@@ -319,6 +301,16 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
                 }
             }
         });
+
+        final ToggleButton is_ready = (ToggleButton) findViewById(R.id.ready);
+        if (is_ready != null) {
+            is_ready.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    mService.mSyncPlayClient.setReady(isChecked);
+                }
+            });
+        }
 
         ImageButton fullScn = (ImageButton) findViewById(R.id.fullscreen);
         fullScn.setOnClickListener(new View.OnClickListener() {
@@ -532,7 +524,13 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
             connecting.show();
         }
     }
-
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (!controller.isShown()) {
+            controller.show();
+        }
+        return false;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
