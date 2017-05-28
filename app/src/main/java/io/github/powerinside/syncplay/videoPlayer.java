@@ -88,8 +88,8 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
                                 URL theUrl = new URL(url);
                                 if (theUrl.getHost().toLowerCase().equals("youtube.com")) {
                                     new AlertDialog.Builder(thisContext)
-                                            .setTitle("Not this time")
-                                            .setMessage("Youtube links are not supported now.")
+                                            .setTitle("Sorry")
+                                            .setMessage("Youtube links are not supported.")
                                             .setPositiveButton("ok", null)
                                             .show();
                                 } else {
