@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <release version="1.6.1" versioncode="15">
+        <change>Fix isReady button</change>
+        <change>Remove "youtube" label in URL media selection</change>
+    </release>
     <release version="1.6.0" versioncode="14">
         <change>Bump exoplayer to v2.4.0</change>
         <change>App is now fully open source and free from ads!</change>
