@@ -107,7 +107,7 @@ public class MediaSourceDialogFragment extends BottomSheetDialogFragment {
         public void onBindViewHolder(ViewHolder holder, int position) {
             if (position == 0) {
                 holder.imageButton.setImageResource(R.drawable.globe256);
-                holder.buttonText.setText("YouTube/URL");
+                holder.buttonText.setText("URL");
             } else if (position == 1) {
                 holder.imageButton.setImageResource(R.drawable.folder72);
                 holder.buttonText.setText("Local file");
