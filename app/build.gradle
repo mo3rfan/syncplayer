@@ -21,9 +21,9 @@ android {
         applicationId "io.github.powerinside.syncplay"
         minSdkVersion 9
         targetSdkVersion 25
-        versionCode 15
+        versionCode 16
         multiDexEnabled true
-        versionName "1.6.1"
+        versionName "1.6.2"
     }
     buildTypes {
         release {
@@ -48,6 +48,6 @@ dependencies {
     compile 'de.cketti.library.changelog:ckchangelog:1.2.2'
     compile 'com.android.support:recyclerview-v7:25.2.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
-    compile 'com.google.android.exoplayer:exoplayer:r2.4.0'
+    compile 'com.google.android.exoplayer:exoplayer:r2.4.1'
     testCompile 'junit:junit:4.12'
 }
