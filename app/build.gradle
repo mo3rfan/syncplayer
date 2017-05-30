@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
+    flavorDimensions "app"
     productFlavors {
         // Define separate dev and prod product flavors.
         dev {
@@ -8,22 +9,24 @@ android {
             // to pre-dex each module and produce an APK that can be tested on
             // Android Lollipop without time consuming dex merging processes.
             minSdkVersion 21
+            dimension "app"
         }
         prod {
             // The actual minSdkVersion for the application.
             minSdkVersion 14
+            dimension "app"
         }
     }
     compileSdkVersion 25
-    buildToolsVersion '25.0.2'
+    buildToolsVersion '25.0.3'
 
     defaultConfig {
         applicationId "io.github.powerinside.syncplay"
         minSdkVersion 9
         targetSdkVersion 25
-        versionCode 16
-        multiDexEnabled true
-        versionName "1.6.2"
+        versionCode 17
+        multiDexEnabled false
+        versionName "1.6.3"
     }
     buildTypes {
         release {
@@ -40,14 +43,12 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':syncplay')
-    compile 'com.android.support:multidex:1.0.1'
-    compile 'com.android.support:support-v4:25.2.0'
-    compile 'com.android.support:design:25.2.0'
-    compile 'com.android.support:appcompat-v7:25.2.0'
-    compile 'org.sufficientlysecure:html-textview:1.8'
+    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'org.sufficientlysecure:html-textview:3.4'
     compile 'de.cketti.library.changelog:ckchangelog:1.2.2'
-    compile 'com.android.support:recyclerview-v7:25.2.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
+    compile 'com.android.support:recyclerview-v7:25.3.1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.google.android.exoplayer:exoplayer:r2.4.1'
     testCompile 'junit:junit:4.12'
 }

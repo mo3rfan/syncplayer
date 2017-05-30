@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <release version="1.6.3" versioncode="17">
+        <change>Update a bunch of dependencies</change>
+        <change>Include only modular dependencies (smaller APK)</change>
+        <change>Removed multidex for now (smaller APK)</change>
+    </release>
     <release version="1.6.2" versioncode="16">
         <change>isReady button will only work after any media is opened</change>
         <change>Bump exoplayer to v.2.4.1</change>
