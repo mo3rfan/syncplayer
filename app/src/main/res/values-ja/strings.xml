@@ -1,0 +1,80 @@
+<resources>
+    <string name="app_name">SyncPlayer</string>
+    <string name="action_settings">設定</string>
+    <string name="title_activity_settings">設定</string>
+    <string name="pref_header_general">全般</string>
+
+    <string name="pref_loop_title">繰り返し</string>
+    <string name="pref_loop">完了後に開始位置からビデオの再生を再開します。
+    </string>
+
+    <string name="pref_title_display_name">表示名</string>
+    <string name="pref_default_display_name">John Smith</string>
+
+    <string name="pref_title_add_friends_to_messages">メッセージする友達を追加</string>
+    <string-array name="pref_example_list_titles">
+        <item>常に</item>
+        <item>可能な場合</item>
+        <item>しない</item>
+    </string-array>
+    <string-array name="pref_example_list_values">
+        <item>1</item>
+        <item>0</item>
+        <item>-1</item>
+    </string-array>
+
+    <string name="pref_header_data_sync">データ &amp; 同期</string>
+
+    <string name="pref_title_sync_frequency">同期頻度</string>
+    <string-array name="pref_sync_frequency_titles">
+        <item>15 分</item>
+        <item>30 分</item>
+        <item>1 時間</item>
+        <item>3 時間</item>
+        <item>6 時間</item>
+        <item>しない</item>
+    </string-array>
+    <string-array name="pref_sync_frequency_values">
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>360</item>
+        <item>-1</item>
+    </string-array>
+
+    <string name="pref_title_system_sync_settings">システム同期設定</string>
+    <string name="pref_header_notifications">通知</string>
+
+    <string name="pref_title_new_message_notifications">新しいメッセージの通知</string>
+
+    <string name="pref_title_ringtone">着信音</string>
+    <string name="pref_ringtone_silent">サイレント</string>
+
+    <string name="pref_title_vibrate">振動</string>
+    <string name="server_address">サーバーアドレス</string>
+    <string name="server_password">サーバーパスワード (あれば)</string>
+    <string name="username">ニックネーム</string>
+    <string name="default_room">ルーム</string>
+    <string name="default_server">syncplay.pl:8995</string>
+    <string name="add_server_dialog">新しい syncplay サーバーを追加</string>
+    <string name="name">名前</string>
+    <string name="title_activity_video_player">ビデオプレーヤー</string>
+    <string name="fields_error">パスワードを除きすべてのフィールドは必須です。</string>
+    <string name="insertOrThrow">エラー: ラベルはすでにリストに存在します。</string>
+    <string name="modify_entry_title">エントリーを更新</string>
+    <string name="save_button">保存</string>
+    <string name="delete_button">削除</string>
+    <string name="cancel_button">キャンセル</string>
+    <string name="progress_connecting">接続中..</string>
+    <string name="progress_wait">お待ちください</string>
+    <string name="close">閉じる</string>
+    <string name="bad_meta">間違ったメタデータを検出しました。 正しいメディアファイルを選択していますか?</string>
+    <string name="nextup_readystate">準備状態</string>
+    <string name="nextup_state">状態</string>
+    <string name="nextup_set">設定</string>
+    <string name="description">メディアコントロール</string>
+    <string name="about">アプリについて</string>
+    <string name="title_activity_about">アプリについて</string>
+    <string name="userlist">ユーザーリスト</string>
+</resources>
