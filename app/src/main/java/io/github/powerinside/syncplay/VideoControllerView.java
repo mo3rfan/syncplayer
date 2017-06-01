@@ -280,7 +280,7 @@ public class VideoControllerView extends FrameLayout {
             mUserListButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mBottomSlideFragment.show(mFragmentManager, getContext().getString(R.string.userlist));
+                    mBottomSlideFragment.show(mFragmentManager, getContext().getString(R.string.userList));
                 }
             });
         }

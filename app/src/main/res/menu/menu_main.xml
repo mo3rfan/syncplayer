@@ -8,7 +8,7 @@
         android:title="@string/changelog_full_title"
         app:showAsAction="never" />
     <item
-        android:id="@+id/privacypolicy"
+        android:id="@+id/privacyPolicy"
         android:orderInCategory="100"
         android:title="Privacy Policy"
         app:showAsAction="never" />

@@ -37,7 +37,7 @@ public class MediaSourceDialogFragment extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_mediasource_dialog, container, false);
+        return inflater.inflate(R.layout.fragment_media_source_dialog, container, false);
     }
 
     @Override
@@ -75,7 +75,7 @@ public class MediaSourceDialogFragment extends BottomSheetDialogFragment {
 
         ViewHolder(LayoutInflater inflater, ViewGroup parent) {
             // TODO: Customize the item layout
-            super(inflater.inflate(R.layout.fragment_mediasource_dialog_item, parent, false));
+            super(inflater.inflate(R.layout.fragment_media_source_dialog, parent, false));
             imageButton = itemView.findViewById(R.id.chooseButton);
             buttonText = itemView.findViewById(R.id.chooseButtonText);
             imageButton.setOnClickListener(new View.OnClickListener() {

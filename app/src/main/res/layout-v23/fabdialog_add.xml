@@ -40,7 +40,7 @@
                 android:text="@string/default_server" />
 
             <EditText
-                android:id="@+id/defaultroom"
+                android:id="@+id/defaultRoom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="4dp"

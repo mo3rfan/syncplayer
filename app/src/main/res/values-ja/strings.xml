@@ -20,6 +20,6 @@
     <string name="description">メディアコントロール</string>
     <string name="about">アプリについて</string>
     <string name="title_activity_about">アプリについて</string>
-    <string name="userlist">ユーザーリスト</string>
+    <string name="userList">ユーザーリスト</string>
     <string name="default_server_item_name">Syncplay-1</string>
 </resources>

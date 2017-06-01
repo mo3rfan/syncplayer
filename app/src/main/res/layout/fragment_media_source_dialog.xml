@@ -9,4 +9,4 @@
     android:paddingBottom="@dimen/list_item_spacing_half"
     android:paddingTop="@dimen/list_item_spacing_half"
     tools:context="io.github.powerinside.syncplay.MediaSourceDialogFragment"
-    tools:listitem="@layout/fragment_mediasource_dialog_item" />
+    tools:listitem="@layout/fragment_media_source_dialog_item" />

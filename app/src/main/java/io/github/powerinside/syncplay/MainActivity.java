@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onShow(final DialogInterface dialog) {
                         final EditText namefield = (EditText) alertDialog.findViewById(R.id.name);
                         final EditText serverfield = (EditText) alertDialog.findViewById(R.id.server);
-                        final EditText roomfield = (EditText) alertDialog.findViewById(R.id.defaultroom);
+                        final EditText roomfield = (EditText) alertDialog.findViewById(R.id.defaultRoom);
                         final EditText passwdfield = (EditText) alertDialog.findViewById(R.id.password);
                         final EditText userfield = (EditText) alertDialog.findViewById(R.id.username);
 
@@ -171,9 +171,9 @@ public class MainActivity extends AppCompatActivity {
                                         && roomfield.getText().length() > 0 && userfield.getText().length() > 0) {
                                     ContentValues cv = new ContentValues();
                                     cv.put(ServerListContract.ServerEntry.COLUMN_NAME_NAME, namefield.getText().toString());
-                                    cv.put(ServerListContract.ServerEntry.COLUMN_NAME_ADDR, serverfield.getText().toString());
-                                    cv.put(ServerListContract.ServerEntry.COLUMN_NAME_DEFROOM, roomfield.getText().toString());
-                                    cv.put(ServerListContract.ServerEntry.COLUMN_NAME_PASSWD, passwdfield.getText().toString());
+                                    cv.put(ServerListContract.ServerEntry.COLUMN_NAME_ADDRESS, serverfield.getText().toString());
+                                    cv.put(ServerListContract.ServerEntry.COLUMN_NAME_DEFAULT_ROOM, roomfield.getText().toString());
+                                    cv.put(ServerListContract.ServerEntry.COLUMN_NAME_PASSWORD, passwdfield.getText().toString());
                                     cv.put(ServerListContract.ServerEntry.COLUMN_NAME_USERNAME, userfield.getText().toString());
                                     try {
                                         db_w.update(ServerListContract.ServerEntry.TABLE_NAME, cv,
@@ -258,14 +258,14 @@ public class MainActivity extends AppCompatActivity {
                                 SQLiteDatabase db = serverListHelper.getWritableDatabase();
                                 EditText namefield = (EditText) mdialog.findViewById(R.id.name);
                                 EditText serverfield = (EditText) mdialog.findViewById(R.id.server);
-                                EditText roomfield = (EditText) mdialog.findViewById(R.id.defaultroom);
+                                EditText roomfield = (EditText) mdialog.findViewById(R.id.defaultRoom);
                                 EditText passwdfield = (EditText) mdialog.findViewById(R.id.password);
                                 EditText userfield = (EditText) mdialog.findViewById(R.id.username);
 
-                                values.put(ServerListContract.ServerEntry.COLUMN_NAME_ADDR, serverfield.getText().toString());
+                                values.put(ServerListContract.ServerEntry.COLUMN_NAME_ADDRESS, serverfield.getText().toString());
                                 values.put(ServerListContract.ServerEntry.COLUMN_NAME_NAME, namefield.getText().toString());
-                                values.put(ServerListContract.ServerEntry.COLUMN_NAME_DEFROOM, roomfield.getText().toString());
-                                values.put(ServerListContract.ServerEntry.COLUMN_NAME_PASSWD, passwdfield.getText().toString());
+                                values.put(ServerListContract.ServerEntry.COLUMN_NAME_DEFAULT_ROOM, roomfield.getText().toString());
+                                values.put(ServerListContract.ServerEntry.COLUMN_NAME_PASSWORD, passwdfield.getText().toString());
                                 values.put(ServerListContract.ServerEntry.COLUMN_NAME_USERNAME, userfield.getText().toString());
 
                                 if (namefield.getText().length() > 0 && serverfield.getText().length() > 0
@@ -345,7 +345,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(new Intent(this, AboutActivity.class));
         }
 
-        if (id == R.id.privacypolicy) {
+        if (id == R.id.privacyPolicy) {
             startActivity(new Intent(this, privacyPolicy.class));
         }
 

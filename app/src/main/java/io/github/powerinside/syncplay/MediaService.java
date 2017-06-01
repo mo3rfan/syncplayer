@@ -272,7 +272,7 @@ public class MediaService extends Service implements VideoControllerView.MediaPl
             }
             msg.obj = "User " + username + extras;
             OSDHandler.sendMessage(msg);
-            //TODO: Send a "LIST" to refresh userlist.
+            //TODO: Send a "LIST" to refresh userList.
         }
 
         @Override
