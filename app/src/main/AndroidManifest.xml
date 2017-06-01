@@ -47,7 +47,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="io.github.powerinside.syncplay.MainActivity" />
         </activity>
-        <activity android:name=".hop_in" />
 
         <activity
             android:name=".privacyPolicy"
