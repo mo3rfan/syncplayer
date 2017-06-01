@@ -30,11 +30,11 @@ public class CustomMediaPlayer extends MediaPlayer {
     }
 
     @Override
-    public void seekTo(int msec) throws IllegalStateException {
+    public void seekTo(int milliseconds) throws IllegalStateException {
         if (attached)
-            super.seekTo(msec);
+            super.seekTo(milliseconds);
         if (mListener != null) {
-            mListener.onTimeBarSeekChanged(msec);
+            mListener.onTimeBarSeekChanged(milliseconds);
         }
     }
 
