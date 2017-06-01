@@ -484,6 +484,7 @@ public class VideoControllerView extends FrameLayout {
         return position;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         show(sDefaultTimeout);

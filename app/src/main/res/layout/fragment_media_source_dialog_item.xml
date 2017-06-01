@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_height="match_parent"
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:layout_gravity="center_horizontal"
     android:gravity="center_horizontal"
@@ -13,7 +14,7 @@
     android:paddingLeft="@dimen/list_item_spacing"
     android:paddingRight="@dimen/list_item_spacing"
     android:paddingTop="@dimen/list_item_spacing_half"
-    />
+        tools:ignore="ContentDescription" />
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/chooseButtonText"
     android:layout_width="128dp"
