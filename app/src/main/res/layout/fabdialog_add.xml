@@ -25,7 +25,7 @@
                 android:layout_marginTop="16dp"
                 android:hint="@string/name"
                 android:inputType="text"
-                android:text="Syncplay-1" />
+                android:text="@string/default_server_item_name" />
 
             <EditText
                 android:id="@+id/server"

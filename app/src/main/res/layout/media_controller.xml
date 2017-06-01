@@ -74,15 +74,6 @@
             android:contentDescription="@string/description"
             />
 
-        <ImageView
-            android:id="@+id/shareButton"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0.06"
-            android:contentDescription="Share"
-            android:src="@android:drawable/ic_menu_share"
-            android:visibility="gone" />
-
         <ImageButton
             android:id="@+id/fullscreen"
             android:layout_width="55dp"
