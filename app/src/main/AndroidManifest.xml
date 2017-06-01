@@ -50,7 +50,7 @@
         <activity android:name=".hop_in" />
 
         <activity
-            android:name=".privacypolicy"
+            android:name=".privacyPolicy"
             android:label="Privacy Policy"
             android:parentActivityName=".MainActivity">
             <meta-data

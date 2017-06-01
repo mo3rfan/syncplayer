@@ -346,7 +346,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (id == R.id.privacypolicy) {
-            startActivity(new Intent(this, privacypolicy.class));
+            startActivity(new Intent(this, privacyPolicy.class));
         }
 
         return super.onOptionsItemSelected(item);

@@ -5,7 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import org.sufficientlysecure.htmltextview.HtmlTextView;
 
-public class privacypolicy extends AppCompatActivity {
+public class privacyPolicy extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
