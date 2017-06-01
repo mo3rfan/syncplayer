@@ -56,8 +56,8 @@
         <change>Added Email support for invites.</change>
         <change>Added isReady toggle button in overlay.</change>
         <change>Back button is more responsive from video player.</change>
-        <change>Clean up a few errenous error messages.</change>
-        <change>Autoload subtitles (srt with same name) on 4.1 and above.</change>
+        <change>Clean up a few erroneous error messages.</change>
+        <change>Auto-load subtitles (srt with same name) on 4.1 and above.</change>
     </release>
     <release version="1.2" versioncode="4">
         <change>Supports automatic "isReady" signalling.</change>
