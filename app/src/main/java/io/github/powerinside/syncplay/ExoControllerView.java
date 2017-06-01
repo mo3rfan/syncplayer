@@ -43,7 +43,7 @@ public class ExoControllerView extends PlaybackControlView {
     }
 
     private void setStuff() {
-        mUserListButton = (ImageButton) findViewById(R.id.userListButton);
+        mUserListButton = findViewById(R.id.userListButton);
         if (mUserListButton != null) {
             mUserListButton.requestFocus();
             mUserListButton.setOnClickListener(new OnClickListener() {
@@ -53,7 +53,7 @@ public class ExoControllerView extends PlaybackControlView {
                 }
             });
         }
-        mOpenDialogButton = (ImageButton) findViewById(R.id.openDialogButton);
+        mOpenDialogButton = findViewById(R.id.openDialogButton);
         if (mOpenDialogButton != null) {
             mOpenDialogButton.requestFocus();
             mOpenDialogButton.setOnClickListener(new OnClickListener() {

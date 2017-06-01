@@ -76,8 +76,8 @@ public class MediaSourceDialogFragment extends BottomSheetDialogFragment {
         ViewHolder(LayoutInflater inflater, ViewGroup parent) {
             // TODO: Customize the item layout
             super(inflater.inflate(R.layout.fragment_mediasource_dialog_item, parent, false));
-            imageButton = (ImageButton) itemView.findViewById(R.id.chooseButton);
-            buttonText = (TextView) itemView.findViewById(R.id.chooseButtonText);
+            imageButton = itemView.findViewById(R.id.chooseButton);
+            buttonText = itemView.findViewById(R.id.chooseButtonText);
             imageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

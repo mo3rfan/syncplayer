@@ -274,7 +274,7 @@ public class VideoControllerView extends FrameLayout {
 
     @SuppressLint("WrongViewCast")
     private void initControllerView(View v) {
-        mUserListButton = (ImageButton) v.findViewById(R.id.userListButton);
+        mUserListButton = v.findViewById(R.id.userListButton);
         if (mUserListButton != null) {
             mUserListButton.requestFocus();
             mUserListButton.setOnClickListener(new OnClickListener() {
@@ -285,7 +285,7 @@ public class VideoControllerView extends FrameLayout {
             });
         }
 
-        mOpenDialogButton = (ImageButton) v.findViewById(R.id.openDialogButton);
+        mOpenDialogButton = v.findViewById(R.id.openDialogButton);
         if (mOpenDialogButton != null) {
             mOpenDialogButton.requestFocus();
             mOpenDialogButton.setOnClickListener(new OnClickListener() {
@@ -295,19 +295,19 @@ public class VideoControllerView extends FrameLayout {
                 }
             });
         }
-        mPauseButton = (ImageButton) v.findViewById(R.id.exo_play);
+        mPauseButton = v.findViewById(R.id.exo_play);
         if (mPauseButton != null) {
             mPauseButton.requestFocus();
             mPauseButton.setOnClickListener(mPauseListener);
         }
 
-        mFullscreenButton = (ImageButton) v.findViewById(R.id.fullscreen);
+        mFullscreenButton = v.findViewById(R.id.fullscreen);
         if (mFullscreenButton != null) {
             mFullscreenButton.requestFocus();
             mFullscreenButton.setOnClickListener(mFullscreenListener);
         }
 
-        mFfwdButton = (ImageButton) v.findViewById(R.id.exo_ffwd);
+        mFfwdButton = v.findViewById(R.id.exo_ffwd);
         if (mFfwdButton != null) {
             mFfwdButton.setOnClickListener(mFfwdListener);
             if (!mFromXml) {
@@ -315,7 +315,7 @@ public class VideoControllerView extends FrameLayout {
             }
         }
 
-        mRewButton = (ImageButton) v.findViewById(R.id.exo_rew);
+        mRewButton = v.findViewById(R.id.exo_rew);
         if (mRewButton != null) {
             mRewButton.setOnClickListener(mRewListener);
             if (!mFromXml) {
@@ -324,16 +324,16 @@ public class VideoControllerView extends FrameLayout {
         }
 
         // By default these are hidden. They will be enabled when setPrevNextListeners() is called
-        mNextButton = (ImageButton) v.findViewById(R.id.exo_next);
+        mNextButton = v.findViewById(R.id.exo_next);
         if (mNextButton != null && !mFromXml && !mListenersSet) {
             mNextButton.setVisibility(View.GONE);
         }
-        mPrevButton = (ImageButton) v.findViewById(R.id.exo_prev);
+        mPrevButton = v.findViewById(R.id.exo_prev);
         if (mPrevButton != null && !mFromXml && !mListenersSet) {
             mPrevButton.setVisibility(View.GONE);
         }
 
-        mProgress = (ProgressBar) v.findViewById(R.id.exo_progress);
+        mProgress = v.findViewById(R.id.exo_progress);
         if (mProgress != null) {
             if (mProgress instanceof SeekBar) {
                 SeekBar seeker = (SeekBar) mProgress;
@@ -342,8 +342,8 @@ public class VideoControllerView extends FrameLayout {
             mProgress.setMax(1000);
         }
 
-        mEndTime = (TextView) v.findViewById(R.id.time);
-        mCurrentTime = (TextView) v.findViewById(R.id.exo_position);
+        mEndTime = v.findViewById(R.id.time);
+        mCurrentTime = v.findViewById(R.id.exo_position);
         mFormatBuilder = new StringBuilder();
         mFormatter = new Formatter(mFormatBuilder, Locale.getDefault());
 
