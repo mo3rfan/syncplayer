@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         assert listView != null;
 
         listView.setAdapter(mAdapter);
-        listView.setEmptyView(findViewById(R.id.emptytextview));
+        listView.setEmptyView(findViewById(R.id.emptyTextView));
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
