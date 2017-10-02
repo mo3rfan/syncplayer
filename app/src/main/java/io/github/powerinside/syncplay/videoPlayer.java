@@ -483,6 +483,18 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
 
                     }
 
+                    /**
+                     * Called when the value of {@link #getRepeatMode()} changes.
+                     *
+                     * @param repeatMode The {@link RepeatMode} used for playback.
+                     */
+
+                    @Override
+                    public void onRepeatModeChanged(int repeatMode) {
+
+                    }
+
+
                     @Override
                     public void onPlayerError(ExoPlaybackException error) {
 
