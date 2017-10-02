@@ -276,15 +276,24 @@ public class MediaService extends Service implements VideoControllerView.MediaPl
         }
 
         @Override
-        public void onUser(String setBy, Boolean paused, double position, Boolean doSeek) {
+        public void onUser(String setBy, Boolean paused, final double position, Boolean doSeek) {
             Message msg1 = new Message();
             msg1.obj = !paused;
             exoPlayPauseHandler.sendMessage(msg1);
             if (doSeek) {
-                mMediaPlayer.seekTo((long) position);
+                try {
+                    mMediaPlayer.seekTo((long) (position * 1000));
+                } catch (Exception e) {
+                    // No idea why the "original thread that created a view" exception
+                    // comes here sometimes
+                }
             }
             Message msg = new Message();
             String extras = "";
+            try {
+                mMediaPlayer.setPlayWhenReady(!paused);
+            } catch (Exception e) {
+            }
             if (paused) {
                 extras = " paused at " + position;
             }
