@@ -77,6 +77,7 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
     public void onMediaSourceClicked(int position) {
         if (position == 0) {
             final EditText txtUrl = new EditText(this);
+            txtUrl.setMaxLines(5);
             txtUrl.setHint("http://www.example.com/somefile.mp4");
             final Context thisContext = this;
             new AlertDialog.Builder(this)
