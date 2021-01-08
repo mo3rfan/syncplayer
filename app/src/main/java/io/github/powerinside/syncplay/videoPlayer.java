@@ -1,5 +1,6 @@
 package io.github.powerinside.syncplay;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Point;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -16,13 +18,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.provider.OpenableColumns;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.NavUtils;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.util.Log;
+import android.view.Display;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -36,22 +32,30 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NavUtils;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
+
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.PlaybackParameters;
+import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
-import com.google.android.exoplayer2.upstream.BandwidthMeter;
-import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
+import com.google.android.exoplayer2.ui.SubtitleView;
+import com.google.android.exoplayer2.util.MimeTypes;
+import com.google.android.exoplayer2.video.VideoListener;
 import com.mitment.syncplay.syncPlayClientInterface;
 
 import java.io.IOException;
@@ -65,13 +69,26 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
     private Handler nothingHandler;
 
     String server;
-    private int REQUEST_TAKE_GALLERY_VIDEO = 1;
+    private final int REQUEST_TAKE_GALLERY_VIDEO = 1;
     private static final int READ_EXTERNAL_STORAGE_FOR_MEDIA = 2;
     private static final int REQUEST_INVITE = 1;
     private Intent pickerProvider;
     private Handler userListHandler;
     private boolean isFullS;
     private ToggleButton is_ready;
+
+    public void seekExternalStoragePermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(videoPlayer.this, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            Toast.makeText(videoPlayer.this, "Allow the 'read external storage' permission so we can open up the file picker to choose a media file to syncplay", Toast.LENGTH_SHORT).show();
+            ActivityCompat.requestPermissions(videoPlayer.this,
+                    new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
+                    1);
+        } else {
+            ActivityCompat.requestPermissions(videoPlayer.this,
+                    new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
+                    READ_EXTERNAL_STORAGE_FOR_MEDIA);
+        }
+    }
 
     @Override
     public void onMediaSourceClicked(int position) {
@@ -168,22 +185,10 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
                     .setType("video/*, audio/*")
                     .setAction(Intent.ACTION_GET_CONTENT);
             int permissionCheck = ContextCompat.checkSelfPermission(videoPlayer.this, android.Manifest.permission.READ_EXTERNAL_STORAGE);
-
             if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
                 startActivityForResult(Intent.createChooser(pickerProvider, "Pick a video"), REQUEST_TAKE_GALLERY_VIDEO);
             } else {
-
-                        Toast.makeText(videoPlayer.this, "Allow the 'read external storage' permission so we can open up the file picker to choose a media file to syncplay", Toast.LENGTH_SHORT).show();
-                        if (ActivityCompat.shouldShowRequestPermissionRationale(videoPlayer.this, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                            Toast.makeText(videoPlayer.this, "Allow the 'read external storage' permission so we can open up the file picker to choose a media file to syncplay", Toast.LENGTH_SHORT).show();
-                            ActivityCompat.requestPermissions(videoPlayer.this,
-                                    new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
-                                    1);
-                        } else {
-                            ActivityCompat.requestPermissions(videoPlayer.this,
-                                    new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
-                                    READ_EXTERNAL_STORAGE_FOR_MEDIA);
-                        }
+                seekExternalStoragePermission();
             }
         }
     }
@@ -199,7 +204,7 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
     MediaService mService;
     ServiceConnection mConnection;
     private SurfaceView videoSurface;
-    private TextView subtitle;
+    private SubtitleView subtitle;
     private SurfaceHolder surfaceholder;
     private ExoControllerView controller;
     TextView nothingLoaded;
@@ -246,8 +251,6 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
     @Override
     protected void onResume() {
         super.onResume();
-        if (mBound) {
-        }
     }
 
     @Override
@@ -262,6 +265,18 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
     @Override
     protected void onStart() {
         super.onStart();
+    }
+
+    private void applyAspectRatio(int width, int height) {
+        Activity activity = this;
+        SurfaceView surface = this.findViewById(R.id.videoSurface);
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        Point displaySize = new Point();
+        display.getSize(displaySize);
+        float aspectRatio = (float) width / (float) height;
+        surface.getLayoutParams().height = displaySize.y;
+        surface.getLayoutParams().width = (int) (aspectRatio * displaySize.y);
+        surface.requestLayout();
     }
 
     @Override
@@ -338,9 +353,8 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
         controller = (ExoControllerView) findViewById(R.id.exo_controller_view1);
         controller.setBottomSlideFragment(mFragment, mMediaSourceFragment,
                 getSupportFragmentManager());
-        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
         TrackSelection.Factory videoTrackSelectionFactory =
-                new AdaptiveTrackSelection.Factory(bandwidthMeter);
+                new AdaptiveTrackSelection.Factory();
         TrackSelector trackSelector =
                 new DefaultTrackSelector(videoTrackSelectionFactory);
 
@@ -386,8 +400,7 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
                 nothingLoaded.setVisibility(View.VISIBLE);
             }
         };
-        subtitle = (TextView) findViewById(R.id.subtitle);
-        subtitle.setText("");
+        subtitle = (SubtitleView) findViewById(R.id.subtitle);
 
         userListHandler = new Handler() {
             @Override
@@ -463,32 +476,18 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
                         is_ready.setEnabled(true);
                     }
                 });
-                mService.mMediaPlayer.addListener(new ExoPlayer.EventListener() {
-                    @Override
-                    public void onTimelineChanged(Timeline timeline, Object manifest) {
 
+                mService.mMediaPlayer.addVideoListener(new VideoListener() {
+                    @Override
+                    public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees, float pixelWidthHeightRatio) {
+                        applyAspectRatio(width, height);
                     }
+                });
+                mService.mMediaPlayer.addListener(new ExoPlayer.EventListener() {
 
                     @Override
                     public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-
                     }
-
-                    @Override
-                    public void onLoadingChanged(boolean isLoading) {
-
-                    }
-
-                    @Override
-                    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-
-                    }
-
-                    /**
-                     * Called when the value of {@link #getRepeatMode()} changes.
-                     *
-                     * @param repeatMode The {@link RepeatMode} used for playback.
-                     */
 
                     @Override
                     public void onRepeatModeChanged(int repeatMode) {
@@ -500,12 +499,13 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
                     public void onPlayerError(ExoPlaybackException error) {
 
                     }
-
+                    /*
                     @Override
                     public void onPositionDiscontinuity() {
                         //This will have to do for "seek"
                         mService.mSyncPlayClient.seeked();
                     }
+                    */
 
                     /**
                      * Called when the current playback parameters change. The playback parameters may change due to
@@ -517,6 +517,10 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
                      */
                     @Override
                     public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+
+                    }
+
+                    public void onPlaybackStateChanged(@Player.State int state) {
 
                     }
                 });
@@ -610,6 +614,7 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
@@ -620,7 +625,7 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
                     MediaMetadataRetriever retriever = new MediaMetadataRetriever();
                     retriever.setDataSource(getApplicationContext(), selectedFile);
                     String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
-                    long duration = Long.parseLong(time );
+                    long duration = Long.parseLong(time);
 
                     int size = 0;
                     Cursor cursor = getContentResolver()

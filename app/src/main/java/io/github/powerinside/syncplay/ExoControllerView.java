@@ -1,15 +1,17 @@
 package io.github.powerinside.syncplay;
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
+
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
-import com.google.android.exoplayer2.ui.PlaybackControlView;
+import com.google.android.exoplayer2.ui.PlayerControlView;
 
 
-public class ExoControllerView extends PlaybackControlView {
+public class ExoControllerView extends PlayerControlView {
     UserListDialogFragment mBottomSlideFragment;
     FragmentManager mFragmentManager;
     MediaSourceDialogFragment mMediaSourceDialogFragment;

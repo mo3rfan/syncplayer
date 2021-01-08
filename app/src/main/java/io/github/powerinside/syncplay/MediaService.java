@@ -1,17 +1,21 @@
 package io.github.powerinside.syncplay;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.app.Service;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.support.v4.app.FragmentManager;
-import android.support.v7.app.NotificationCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.core.app.NotificationCompat;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.View;
@@ -21,15 +25,20 @@ import android.widget.Toast;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
+import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.ProgressiveMediaSource;
+import com.google.android.exoplayer2.text.Cue;
+import com.google.android.exoplayer2.text.TextOutput;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
+import com.google.android.exoplayer2.ui.SubtitleView;
 import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
@@ -38,6 +47,7 @@ import com.mitment.syncplay.syncPlayClient;
 import com.mitment.syncplay.syncPlayClientInterface;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
@@ -50,7 +60,7 @@ public class MediaService extends Service implements VideoControllerView.MediaPl
     String username;
     String passwd;
     String room;
-    DefaultBandwidthMeter bandwidthMeter;
+    DefaultBandwidthMeter.Builder bandwidthMeter;
     DataSource.Factory dataSourceFactory;
     ExtractorsFactory extractorsFactory;
     syncPlayClient mSyncPlayClient;
@@ -68,12 +78,30 @@ public class MediaService extends Service implements VideoControllerView.MediaPl
     private Handler nothingHandler;
     private Handler userListHandler;
     private Handler exoPlayPauseHandler;
+    String notificationChannelID = "Active Player Controls";
 
 
     @Override
     public void onCreate() {
         super.onCreate();
-        nbuilder = new NotificationCompat.Builder(MediaService.this);
+        this.createNotificationChannel();
+        nbuilder = new NotificationCompat.Builder(MediaService.this, notificationChannelID);
+    }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.playercontrols_channel_name);
+            String description = getString(R.string.playercontrols_channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(notificationChannelID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
     @Override
@@ -150,12 +178,11 @@ public class MediaService extends Service implements VideoControllerView.MediaPl
     @Override
     public IBinder onBind(final Intent intent) {
 
-        bandwidthMeter = new DefaultBandwidthMeter();
+        bandwidthMeter = new DefaultBandwidthMeter.Builder(getApplicationContext());
         TrackSelection.Factory videoTrackSelectionFactory =
-                new AdaptiveTrackSelection.Factory(bandwidthMeter);
-
+                new AdaptiveTrackSelection.Factory();
         dataSourceFactory = new DefaultDataSourceFactory(this,
-                Util.getUserAgent(this, "SyncPlayer"), bandwidthMeter);
+                Util.getUserAgent(this, "SyncPlayer"));
 
         extractorsFactory = new DefaultExtractorsFactory();
 
@@ -164,8 +191,8 @@ public class MediaService extends Service implements VideoControllerView.MediaPl
 
         LoadControl loadControl = new DefaultLoadControl();
 
-        SimpleExoPlayer player =
-                ExoPlayerFactory.newSimpleInstance(getApplicationContext(), trackSelector, loadControl);
+        SimpleExoPlayer player = new SimpleExoPlayer.Builder(getApplicationContext()).build();
+
         mMediaPlayer = player;
 
         setCompletionListener();
@@ -219,9 +246,9 @@ public class MediaService extends Service implements VideoControllerView.MediaPl
 
     public void setUserListHandler(Handler handler) { userListHandler = handler; }
     public void preparePlayer() {
-        MediaSource videoSource = new ExtractorMediaSource(syncplayuri,
-                dataSourceFactory, extractorsFactory, null, null);
-        mMediaPlayer.prepare(videoSource);
+        MediaItem mediaItem = MediaItem.fromUri(syncplayuri);
+        mMediaPlayer.setMediaItem(mediaItem);
+        mMediaPlayer.prepare();
         mSyncPlayClient.setPlayerState(new syncPlayClientInterface.playerDetails() {
             @Override
             public long getPosition() {
@@ -329,11 +356,12 @@ public class MediaService extends Service implements VideoControllerView.MediaPl
         nbuilder.setContentTitle(getString(R.string.app_name));
         nbuilder.setContentIntent(pi);
         nbuilder.setSmallIcon(R.mipmap.ic_launcher);
+        nbuilder.setChannelId(notificationChannelID);
         startForeground(NOTIFICATION_ID, nbuilder.build());
     }
 
-    public void setSubtitle(final TextView subtitle) {
-        //TODO: Subtitle support
+    public void setSubtitle(final SubtitleView subtitleView) {
+        mMediaPlayer.addTextOutput(cues -> subtitleView.onCues(cues));
     }
 
     public void setUserListFragment(UserListDialogFragment mFragment, FragmentManager fM) {

@@ -3,30 +3,22 @@ apply plugin: 'com.android.application'
 android {
     flavorDimensions "app"
     productFlavors {
-        // Define separate dev and prod product flavors.
-        dev {
-            // dev utilizes minSDKVersion = 21 to allow the Android gradle plugin
-            // to pre-dex each module and produce an APK that can be tested on
-            // Android Lollipop without time consuming dex merging processes.
-            minSdkVersion 21
-            dimension "app"
-        }
         prod {
             // The actual minSdkVersion for the application.
-            minSdkVersion 14
+            minSdkVersion 26
             dimension "app"
         }
     }
-    compileSdkVersion 'android-26'
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 'android-30'
+    buildToolsVersion '29.0.3'
 
     defaultConfig {
         applicationId "io.github.powerinside.syncplay"
-        minSdkVersion 9
-        targetSdkVersion 25
+        minSdkVersion 16
+        targetSdkVersion 30
         versionCode 18
         multiDexEnabled false
-        versionName "1.6.4"
+        versionName "1.6.5"
     }
     buildTypes {
         release {
@@ -35,20 +27,21 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':syncplay')
-    compile 'com.android.support:design:26.1.0'
-    compile 'com.android.support:appcompat-v7:26.1.0'
-    compile 'org.sufficientlysecure:html-textview:3.4'
-    compile 'de.cketti.library.changelog:ckchangelog:1.2.2'
-    compile 'com.android.support:recyclerview-v7:26.0.1'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.google.android.exoplayer:exoplayer:r2.5.3'
-    testCompile 'junit:junit:4.12'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(':syncplay')
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'org.sufficientlysecure:html-textview:4.0'
+    implementation 'de.cketti.library.changelog:ckchangelog:1.2.2'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'com.google.android.exoplayer:exoplayer:2.12.2'
+    implementation 'androidx.coordinatorlayout:coordinatorlayout:1.1.0'
+    testImplementation 'junit:junit:4.13.1'
 }

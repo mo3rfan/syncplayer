@@ -22,4 +22,6 @@
     <string name="title_activity_about">About</string>
     <string name="userList">user-list</string>
     <string name="default_server_item_name">Syncplay-1</string>
+    <string name="playercontrols_channel_name">Currently playing media</string>
+    <string name="playercontrols_channel_description">Displays the currently playing media file in the notification bar as a persistent notification</string>
 </resources>

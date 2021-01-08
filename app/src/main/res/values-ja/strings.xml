@@ -22,4 +22,6 @@
     <string name="title_activity_about">アプリについて</string>
     <string name="userList">ユーザーリスト</string>
     <string name="default_server_item_name">Syncplay-1</string>
+    <string name="playercontrols_channel_name">現在メディアを再生中</string>
+    <string name="playercontrols_channel_description">現在再生中のメディアファイルを永続的な通知として通知バーに表示します</string>
 </resources>
