@@ -30,8 +30,7 @@ jobs:
         uses: Tlaster/android-sign@v1.2.2
         with:
           # The directory to find your release to sign
-          releaseDirectory: |
-            app/build/outputs/apk/prod/release
+          releaseDirectory: app/build/outputs/apk/prod/release
           signingKeyBase64: ${{ secrets.SIGNINGKEYBASE64 }}
           alias: ${{ secrets.ALIAS }}
           keyStorePassword: ${{ secrets.KEYSTOREPASSWORD }}
