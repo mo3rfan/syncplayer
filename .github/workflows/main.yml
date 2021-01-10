@@ -27,9 +27,8 @@ jobs:
         run: ./gradlew assembleProd
 
       - name: Android Sign
-        uses: Tlaster/android-sign@v1.2.2
+        uses: r0adkll/sign-android-release@v1
         with:
-          # The directory to find your release to sign
           releaseDirectory: app/build/outputs/apk/prod/release
           signingKeyBase64: ${{ secrets.SIGNINGKEYBASE64 }}
           alias: ${{ secrets.ALIAS }}
