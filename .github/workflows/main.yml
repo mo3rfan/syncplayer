@@ -20,6 +20,8 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          submodules: true
 
       - name: Build Android project
         run: ./gradlew assembleProd
