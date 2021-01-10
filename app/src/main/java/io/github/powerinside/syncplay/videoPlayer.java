@@ -672,7 +672,6 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
             openSubtitlesButton.setImageDrawable(getDrawable(R.drawable.exo_ic_subtitle_on));
             MediaItem subtitleMediaItem = new MediaItem.Builder().setUri(mService.syncplayuri).setSubtitles(Lists.newArrayList(subtitleItem)).build();
             mService.mMediaPlayer.setMediaItem(subtitleMediaItem);
-            mService.mMediaPlayer.prepare();
             mService.setSubtitle((SubtitleView) this.findViewById(R.id.subtitle));
         }
     }
