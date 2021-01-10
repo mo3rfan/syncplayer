@@ -86,10 +86,6 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
             Toast.makeText(videoPlayer.this, "Allow the 'read external storage' permission so we can open up the file picker to choose a media file to syncplay", Toast.LENGTH_SHORT).show();
             ActivityCompat.requestPermissions(videoPlayer.this,
                     new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
-                    1);
-        } else {
-            ActivityCompat.requestPermissions(videoPlayer.this,
-                    new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
                     request_code);
         }
     }
@@ -632,7 +628,7 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         ImageButton openSubtitlesButton = (ImageButton) findViewById(R.id.openSubtitles);
-        if (requestCode == 1) {
+        if (requestCode == REQUEST_TAKE_GALLERY_VIDEO) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
                 Uri selectedFile = data.getData();
@@ -686,11 +682,13 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     startActivityForResult(Intent.createChooser(pickerProvider, "Pick a video"), REQUEST_TAKE_GALLERY_VIDEO);
                 }
+                break;
             }
             case SUBTITLE_REQ: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     startActivityForResult(Intent.createChooser(pickerProvider, "Pick a subtitle file"), SUBTITLE_REQ);
                 }
+                break;
             }
         }
     }
