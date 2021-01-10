@@ -34,3 +34,9 @@ jobs:
           alias: ${{ secrets.ALIAS }}
           keyStorePassword: ${{ secrets.KEYSTOREPASSWORD }}
           keyPassword: ${{ secrets.KEYPASSWORD }}
+
+      - name: Emit signed APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: signed_apk
+          path: app/build/outputs/apk/prod/release/app-prod-release-unsigned-signed.apk
