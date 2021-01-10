@@ -8,6 +8,7 @@
     android:gravity="center_horizontal|center_vertical"
     android:orientation="vertical">
 
+
     <FrameLayout
         android:id="@+id/videoSurfaceContainer"
         android:layout_width="match_parent"
@@ -18,21 +19,6 @@
             android:layout_width="match_parent"
             android:layout_gravity="center_horizontal"
             android:layout_height="match_parent" />
-
-        <com.google.android.exoplayer2.ui.SubtitleView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/subtitle"
-            android:layout_gravity="bottom|center_horizontal"
-            android:textAlignment="center"
-            android:shadowColor="#000000"
-            android:shadowDx="2"
-            android:shadowDy="2"
-            android:shadowRadius="0.01"
-            android:singleLine="true"
-            android:text="SRT"
-            android:layout_marginBottom="50dp" />
 
         <TextView
             android:id="@+id/nothingOpenedText"
@@ -45,6 +31,12 @@
             android:visibility="invisible"
             android:text="No media file opened! Tap on the screen to bring up the controls and select a video by tapping on the '+' button."
             android:textAlignment="center" />
+
+        <com.google.android.exoplayer2.ui.SubtitleView
+            android:id="@+id/subtitle"
+            android:layout_width="match_parent"
+            android:visibility="visible"
+            android:layout_height="match_parent" />
 
         <io.github.powerinside.syncplay.ExoControllerView
             android:layout_width="match_parent"
@@ -65,21 +57,6 @@
             android:shadowDy="2"
             android:shadowRadius="0.01"
             android:textAppearance="?android:attr/textAppearanceMedium" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:id="@+id/subtitle_txt_view"
-            android:layout_gravity="bottom|center_horizontal"
-            android:textAlignment="center"
-            android:shadowColor="#000000"
-            android:shadowDx="2"
-            android:shadowDy="2"
-            android:shadowRadius="0.01"
-            android:singleLine="true"
-            android:text="SRT"
-            android:layout_marginBottom="50dp" />
 
     </FrameLayout>
 </LinearLayout>

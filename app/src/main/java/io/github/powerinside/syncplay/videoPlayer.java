@@ -39,11 +39,13 @@ import androidx.core.app.NavUtils;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
+import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -56,6 +58,7 @@ import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SubtitleView;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.video.VideoListener;
+import com.google.common.collect.Lists;
 import com.mitment.syncplay.syncPlayClientInterface;
 
 import java.io.IOException;
@@ -76,8 +79,9 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
     private Handler userListHandler;
     private boolean isFullS;
     private ToggleButton is_ready;
+    private static final int SUBTITLE_REQ = 3;
 
-    public void seekExternalStoragePermission() {
+    public void seekExternalStoragePermission(int request_code) {
         if (ActivityCompat.shouldShowRequestPermissionRationale(videoPlayer.this, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
             Toast.makeText(videoPlayer.this, "Allow the 'read external storage' permission so we can open up the file picker to choose a media file to syncplay", Toast.LENGTH_SHORT).show();
             ActivityCompat.requestPermissions(videoPlayer.this,
@@ -86,7 +90,7 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
         } else {
             ActivityCompat.requestPermissions(videoPlayer.this,
                     new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
-                    READ_EXTERNAL_STORAGE_FOR_MEDIA);
+                    request_code);
         }
     }
 
@@ -188,7 +192,7 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
             if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
                 startActivityForResult(Intent.createChooser(pickerProvider, "Pick a video"), REQUEST_TAKE_GALLERY_VIDEO);
             } else {
-                seekExternalStoragePermission();
+                seekExternalStoragePermission(READ_EXTERNAL_STORAGE_FOR_MEDIA);
             }
         }
     }
@@ -351,6 +355,18 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
         final UserListDialogFragment mFragment = UserListDialogFragment.newInstance(null);
         final MediaSourceDialogFragment mMediaSourceFragment = MediaSourceDialogFragment.newInstance();
         controller = (ExoControllerView) findViewById(R.id.exo_controller_view1);
+        View mSubtitleButton = findViewById((R.id.openSubtitles));
+        mSubtitleButton.setOnClickListener(v -> {
+            pickerProvider = new Intent()
+                    .setType(MimeTypes.APPLICATION_SUBRIP)
+                    .setAction(Intent.ACTION_GET_CONTENT);
+            int permissionCheck = ContextCompat.checkSelfPermission(videoPlayer.this, android.Manifest.permission.READ_EXTERNAL_STORAGE);
+            if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+                startActivityForResult(Intent.createChooser(pickerProvider, "Pick a subtitle file"), SUBTITLE_REQ);
+            } else {
+                seekExternalStoragePermission(SUBTITLE_REQ);
+            }
+        });
         controller.setBottomSlideFragment(mFragment, mMediaSourceFragment,
                 getSupportFragmentManager());
         TrackSelection.Factory videoTrackSelectionFactory =
@@ -615,13 +631,14 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        ImageButton openSubtitlesButton = (ImageButton) findViewById(R.id.openSubtitles);
         if (requestCode == 1) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
                 Uri selectedFile = data.getData();
                 if (selectedFile != null) {
                     mService.setUri(selectedFile);
-
+                    openSubtitlesButton.setVisibility(View.VISIBLE);
                     MediaMetadataRetriever retriever = new MediaMetadataRetriever();
                     retriever.setDataSource(getApplicationContext(), selectedFile);
                     String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
@@ -645,6 +662,20 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
                             .show();
                 }
             }
+        } else if (requestCode == SUBTITLE_REQ && resultCode == RESULT_OK) {
+            Uri selectedFile = data.getData();
+            DefaultTrackSelector trackSelector = new DefaultTrackSelector(this);
+            trackSelector.setParameters(trackSelector.buildUponParameters()
+                    .setPreferredTextLanguage("en")
+                    .setRendererDisabled(C.TRACK_TYPE_VIDEO, false)
+                    .build()
+            );
+            MediaItem.Subtitle subtitleItem = new MediaItem.Subtitle(selectedFile, MimeTypes.APPLICATION_SUBRIP, null, C.SELECTION_FLAG_DEFAULT);
+            openSubtitlesButton.setImageDrawable(getDrawable(R.drawable.exo_ic_subtitle_on));
+            MediaItem subtitleMediaItem = new MediaItem.Builder().setUri(mService.syncplayuri).setSubtitles(Lists.newArrayList(subtitleItem)).build();
+            mService.mMediaPlayer.setMediaItem(subtitleMediaItem);
+            mService.mMediaPlayer.prepare();
+            mService.setSubtitle((SubtitleView) this.findViewById(R.id.subtitle));
         }
     }
 
@@ -654,6 +685,11 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
             case READ_EXTERNAL_STORAGE_FOR_MEDIA: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     startActivityForResult(Intent.createChooser(pickerProvider, "Pick a video"), REQUEST_TAKE_GALLERY_VIDEO);
+                }
+            }
+            case SUBTITLE_REQ: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    startActivityForResult(Intent.createChooser(pickerProvider, "Pick a subtitle file"), SUBTITLE_REQ);
                 }
             }
         }

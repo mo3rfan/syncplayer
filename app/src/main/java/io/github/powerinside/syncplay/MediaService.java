@@ -1,7 +1,6 @@
 package io.github.powerinside.syncplay;
 
 import android.app.Activity;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -14,26 +13,20 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import androidx.fragment.app.FragmentManager;
-import androidx.core.app.NotificationCompat;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.SurfaceHolder;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.core.app.NotificationCompat;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
-import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.ExtractorsFactory;
-import com.google.android.exoplayer2.source.ExtractorMediaSource;
-import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.ProgressiveMediaSource;
-import com.google.android.exoplayer2.text.Cue;
-import com.google.android.exoplayer2.text.TextOutput;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
@@ -47,7 +40,6 @@ import com.mitment.syncplay.syncPlayClient;
 import com.mitment.syncplay.syncPlayClientInterface;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
@@ -361,7 +353,11 @@ public class MediaService extends Service implements VideoControllerView.MediaPl
     }
 
     public void setSubtitle(final SubtitleView subtitleView) {
-        mMediaPlayer.addTextOutput(cues -> subtitleView.onCues(cues));
+        subtitleView.setViewType(SubtitleView.VIEW_TYPE_CANVAS);
+        subtitleView.setUserDefaultStyle();
+        subtitleView.setUserDefaultTextSize();
+        subtitleView.setForegroundGravity(Gravity.BOTTOM + Gravity.CENTER_HORIZONTAL);
+        mMediaPlayer.addTextOutput(subtitleView::onCues);
     }
 
     public void setUserListFragment(UserListDialogFragment mFragment, FragmentManager fM) {
