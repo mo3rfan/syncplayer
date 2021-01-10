@@ -557,8 +557,10 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
     }
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (!controller.isShown()) {
+        if (!controller.isShown() && event.getAction() == MotionEvent.ACTION_UP) {
             controller.show();
+        } else if (controller.isShown() && event.getAction() == MotionEvent.ACTION_UP) {
+            controller.hide();
         }
         return false;
     }
