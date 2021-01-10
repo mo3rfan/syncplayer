@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <release version="1.7.0" versioncode="19">
+        <change>Maintain aspect ratio in video player</change>
+        <change>Ability to load external subtitles (srt files)</change>
+        <change>Player controls toggles visibility properly on tapping the screen</change>
+    </release>
     <release version="1.6.4" versioncode="18">
         <change>Update a bunch of dependencies including exoplayer</change>
         <change>Fix crashes (Github issue #4)</change>
