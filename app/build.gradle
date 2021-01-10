@@ -5,7 +5,7 @@ android {
     productFlavors {
         prod {
             // The actual minSdkVersion for the application.
-            minSdkVersion 26
+            minSdkVersion 16
             dimension "app"
         }
     }
@@ -16,7 +16,7 @@ android {
         applicationId "io.github.powerinside.syncplay"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 19
+        versionCode 21
         multiDexEnabled false
         versionName "1.7.0"
     }
