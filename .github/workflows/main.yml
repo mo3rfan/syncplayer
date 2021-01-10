@@ -1,39 +1,36 @@
-# This is a basic workflow to help you get started with Actions
+name: BuildAndSignProdAPK
 
-name: CI
-
-# Controls when the action will run. 
+# Controls when the action will run.
 on:
-  # Triggerthe work flow on new release tag
+  # Trigger the workflow on new release tag
   release:
-    branches: [ master ]
-    types: [ created ]
+    types: [published, created]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
+  build_and_sign:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout code
       - uses: actions/checkout@v2
+
+      - name: Build Android project
+        run: ./gradlew assembleProd
 
       - name: Android Sign
         uses: Tlaster/android-sign@v1.2.2
         with:
-        # The directory to find your release to sign
+          # The directory to find your release to sign
           releaseDirectory: |
-            app/build/outputs/apk/release
-            app/build/outputs/bundle/release
+            app/build/outputs/apk/prod/release
           signingKeyBase64: ${{ secrets.SIGNINGKEYBASE64 }}
           alias: ${{ secrets.ALIAS }}
           keyStorePassword: ${{ secrets.KEYSTOREPASSWORD }}
           keyPassword: ${{ secrets.KEYPASSWORD }}
-      
-
