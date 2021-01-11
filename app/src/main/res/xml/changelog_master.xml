@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <release version="1.7.1" versioncode="22">
+        <change>Fixed the subtitle selector</change>
+        <change>Fixed the permissions request dialog not showing up</change>
+        <change>Changed launcher icon</change>
+    </release>
     <release version="1.7.0" versioncode="21">
         <change>Maintain aspect ratio in video player</change>
         <change>Ability to load external subtitles (srt files)</change>

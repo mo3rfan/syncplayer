@@ -16,9 +16,9 @@ android {
         applicationId "io.github.powerinside.syncplay"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 21
+        versionCode 22
         multiDexEnabled false
-        versionName "1.7.0"
+        versionName "1.7.1"
     }
     buildTypes {
         release {
