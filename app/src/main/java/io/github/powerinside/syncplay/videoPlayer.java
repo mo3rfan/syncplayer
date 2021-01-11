@@ -84,10 +84,10 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
     public void seekExternalStoragePermission(int request_code) {
         if (ActivityCompat.shouldShowRequestPermissionRationale(videoPlayer.this, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
             Toast.makeText(videoPlayer.this, "Allow the 'read external storage' permission so we can open up the file picker to choose a media file to syncplay", Toast.LENGTH_SHORT).show();
-            ActivityCompat.requestPermissions(videoPlayer.this,
-                    new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
-                    request_code);
         }
+        ActivityCompat.requestPermissions(videoPlayer.this,
+                new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
+                request_code);
     }
 
     @Override
@@ -669,7 +669,7 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
                     .build()
             );
             MediaItem.Subtitle subtitleItem = new MediaItem.Subtitle(selectedFile, MimeTypes.APPLICATION_SUBRIP, null, C.SELECTION_FLAG_DEFAULT);
-            openSubtitlesButton.setImageDrawable(getDrawable(R.drawable.exo_ic_subtitle_on));
+            openSubtitlesButton.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.exo_ic_subtitle_on));
             MediaItem subtitleMediaItem = new MediaItem.Builder().setUri(mService.syncplayuri).setSubtitles(Lists.newArrayList(subtitleItem)).build();
             mService.mMediaPlayer.setMediaItem(subtitleMediaItem);
             mService.setSubtitle((SubtitleView) this.findViewById(R.id.subtitle));
