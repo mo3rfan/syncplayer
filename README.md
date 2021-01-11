@@ -1,5 +1,9 @@
 # SyncPlayer
 
+![Github release](https://img.shields.io/github/v/release/mo3rfan/syncplayer.svg?logo=github)
+![F-droid version](https://img.shields.io/f-droid/v/io.github.powerinside.syncplay.svg)
+![BuildAndSignProdAPK](https://github.com/mo3rfan/syncplayer/workflows/BuildAndSignProdAPK/badge.svg)
+
 Here lies the source code of the SyncPlayer android app, starting from version 1.6.0.
 
 <a href="https://www.f-droid.org/packages/io.github.powerinside.syncplay/" target="_blank">
