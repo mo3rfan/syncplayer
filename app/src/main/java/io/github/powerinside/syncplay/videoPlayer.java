@@ -354,7 +354,8 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
         View mSubtitleButton = findViewById((R.id.openSubtitles));
         mSubtitleButton.setOnClickListener(v -> {
             pickerProvider = new Intent()
-                    .setType(MimeTypes.APPLICATION_SUBRIP)
+                    .setType("text/plain")
+                    .addCategory(Intent.CATEGORY_OPENABLE)
                     .setAction(Intent.ACTION_GET_CONTENT);
             int permissionCheck = ContextCompat.checkSelfPermission(videoPlayer.this, android.Manifest.permission.READ_EXTERNAL_STORAGE);
             if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
