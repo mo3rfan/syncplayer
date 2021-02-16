@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <changelog>
+    <release version="1.7.2" versioncode="23">
+        <change>Password protected server support added</change>
+        <change>Syncplay errors thrown by the server will now be shown</change>
+    </release>
     <release version="1.7.1" versioncode="22">
         <change>Fixed the subtitle selector</change>
         <change>Fixed the permissions request dialog not showing up</change>
