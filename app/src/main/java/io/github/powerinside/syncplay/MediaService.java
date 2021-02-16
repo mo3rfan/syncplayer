@@ -353,7 +353,7 @@ public class MediaService extends Service implements VideoControllerView.MediaPl
     };
 
     public void executeAsyncSocket() {
-        mSyncPlayClient = new syncPlayClient(username, room, this.server, null, mSyncPlayClientInterface);
+        mSyncPlayClient = new syncPlayClient(username, room, this.server, this.passwd, mSyncPlayClientInterface);
         Thread thread = new Thread(mSyncPlayClient);
         thread.start();
     }
