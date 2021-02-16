@@ -38,6 +38,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.NavUtils;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -80,6 +81,8 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
     private boolean isFullS;
     private ToggleButton is_ready;
     private static final int SUBTITLE_REQ = 3;
+
+    private MutableLiveData<String> error_ld;
 
     public void seekExternalStoragePermission(int request_code) {
         if (ActivityCompat.shouldShowRequestPermissionRationale(videoPlayer.this, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
@@ -286,6 +289,9 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
         Bundle mbundle = i.getExtras();
         Boolean skipOnCreate = false;
 
+        this.error_ld = new MutableLiveData<>();
+        error_ld.observe(this, error_msg -> new AlertDialog.Builder(this).setTitle("Error!").setMessage(error_msg).setNeutralButton("Ok", (dialog, which) -> finish()).show());
+
         try {
             server = mbundle.getString("server");
             passwd = mbundle.getString("passwd");
@@ -294,14 +300,11 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
         } catch (NullPointerException e) {
             skipOnCreate = true;
         }
-
-        mHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                String mString = (String) msg.obj;
-                Toast.makeText(getApplicationContext(), mString, Toast.LENGTH_SHORT).show();
-            }
-        };
+        mHandler = new Handler(msg -> {
+            String mString = (String) msg.obj;
+            Toast.makeText(getApplicationContext(), mString, Toast.LENGTH_SHORT).show();
+            return true;
+        });
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
@@ -472,6 +475,7 @@ public class videoPlayer extends FragmentActivity implements SurfaceHolder.Callb
                 mService.setNothingHandler(nothingHandler);
                 mService.setUserListHandler(userListHandler);
                 mService.setExoPlayPauseHandler(exoPlayPauseHandler);
+                mService.setLiveData(error_ld);
                 mService.prepareAsyncSocket(server, username, passwd, room, mHandler, connecting,
                         videoPlayer.this, null, OSDHandler);
                 if (!finalSkipOnCreate) {

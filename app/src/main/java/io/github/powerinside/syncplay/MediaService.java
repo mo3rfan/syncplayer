@@ -20,6 +20,7 @@ import android.view.View;
 
 import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.LoadControl;
@@ -38,6 +39,10 @@ import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.mitment.syncplay.syncPlayClient;
 import com.mitment.syncplay.syncPlayClientInterface;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
 import java.util.Map;
@@ -71,6 +76,7 @@ public class MediaService extends Service implements VideoControllerView.MediaPl
     private Handler userListHandler;
     private Handler exoPlayPauseHandler;
     String notificationChannelID = "Active Player Controls";
+    private MutableLiveData<String> error_ld;
 
 
     @Override
@@ -258,6 +264,8 @@ public class MediaService extends Service implements VideoControllerView.MediaPl
         this.mViewMod = mViewMod;
     }
 
+    public void setLiveData(MutableLiveData<String> ld) { this.error_ld = ld; }
+
     syncPlayClientInterface mSyncPlayClientInterface = new syncPlayClientInterface() {
         @Override
         public void debugMessage(String msg) {
@@ -276,6 +284,14 @@ public class MediaService extends Service implements VideoControllerView.MediaPl
             Log.d("SyncPlayer", "Error: " + errMsg);
             mViewMod.progressShow(false);
             mViewMod.userFragmentShow(false);
+            JSONParser jParse = new JSONParser();
+            try {
+                JSONObject jObj = (JSONObject) jParse.parse(errMsg);
+                if (jObj.containsKey("message")) {
+                    error_ld.postValue(jObj.get("message").toString());
+                }
+            } catch (ParseException ignored) {};
+
             stopSelf();
         }
 
